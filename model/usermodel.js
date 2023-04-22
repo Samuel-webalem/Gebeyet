@@ -64,6 +64,7 @@ userschema.pre(/^find/, async function () {
   this.find({ active: { $ne: false } });
   next();
 })
+
 userschema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
