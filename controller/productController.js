@@ -26,7 +26,23 @@ exports.getproduct = async (req, res,next) => {
     });
   }
 };
-
+exports.getsingleproduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    console.log(product)
+     res.status(200).json({
+       status: "succuess",
+       data: {
+          product
+        }
+     });
+  } catch (error) {
+     res.status(404).json({
+       status: "failed",
+       message: error,
+     });
+  }
+}
 exports.createproduct = async (req, res) => {
   try {
     const newProduct = await Product.create(req.body);

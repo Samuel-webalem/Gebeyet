@@ -58,13 +58,6 @@ exports.SignUp = async (req, res, next) => {
       passwordConfirmation: req.body.passwordConfirmation,
     });
     createSendToken(User, 200, res);
-    res.status(200).json({
-      status: "success",
-      token,
-      data: {
-        user,
-      },
-    });
   } catch (error) {
     res.status(404).json({
       status: "failed",
@@ -155,11 +148,11 @@ exports.protect = async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      res.status(400).json({
+    if (!roles.includes(req.user.role)||!roles) {
+      next(res.status(400).json({
         status: "failed",
         message: "you dont have a permition to perform this task",
-      });
+      }));
     }
     next();
   };
