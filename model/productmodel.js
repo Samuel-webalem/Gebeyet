@@ -1,52 +1,55 @@
 const mongoose = require('mongoose');
-const slugify= require('slugify')
-const productSchemea = new mongoose.Schema({
-  title: {
-    type: String,
-    required: [true, "Please insert product title"],
-    maxlength: [
-      25,
-      "The product title have must equal or less than to 25 character",
+const slugify = require('slugify')
+
+const { Schema } = mongoose;
+const productSchemea = new Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Please insert product title"],
+      maxlength: [
+        25,
+        "The product title have must equal or less than to 25 character",
+      ],
+    },
+    price: {
+      type: Number,
+      required: [true, "Please insert product price"],
+    },
+    images: [
+      {
+        type: String,
+      },
     ],
-  },
-  price: {
-    type: Number,
-    required: [true, "Please insert product price"],
-  },
-  images: [
-    {
+    rating: Number,
+    thumbnail: {
+      type: String,
+      required: [true, "Please insert product category"],
+    },
+    category: {
+      type: String,
+      required: [true, "Please insert product category"],
+    },
+    brand: {
+      type: String,
+      required: [true, "please insert brand name"],
+    },
+    description: {
       type: String,
     },
-  ],
-  rating: Number,
-  thumbnail: {
-    type: String,
-    required: [true, "Please insert product category"],
+    stock: Number,
+    seller: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    discountPercentage: Number,
+    slug: String,
   },
-  category: {
-    type: String,
-    required: [true, "Please insert product category"],
-  },
-  brand: {
-    type: String,
-    required: [true, "please insert brand name"],
-  },
-  description: {
-    type: String,
-  },
-  stock: Number,
-  seller: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-  discountPercentage: Number,
-  slug: String,
-},
-{
+  {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
   }
 );
 
@@ -61,6 +64,7 @@ productSchemea.pre(/^find/, function (next) {
   });
   next();
 });
+
 
 
 // productSchemea.pre('save', async function (next) {

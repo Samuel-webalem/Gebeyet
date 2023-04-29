@@ -59,7 +59,7 @@ const userschema = Schema({
   passwordResetTokenExpires:String
 });
 
-userschema.pre(/^find/, async function () {
+userschema.pre(/^find/, async function (next) {
   
   this.find({ active: { $ne: false } });
   next();

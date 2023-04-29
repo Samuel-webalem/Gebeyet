@@ -51,22 +51,21 @@ const imoporttour = async () => {
     console.log(err);
   }
 };
-imoporttour();
-// const deleteall = async () => {
-//   try {
-//     // await Tour.deleteMany();
-//     //  await Review.deleteMany();
-//       // await User.deleteMany();
-//     console.log('data succuess fully deleted');
-//     process.exit();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-// console.log(process.argv[2]);
+const deleteall = async () => {
+  try {
+    await Product.deleteMany();
+    //  await Review.deleteMany();
+      // await User.deleteMany();
+    console.log('data succuess fully deleted');
+    process.exit();
+  } catch (err) {
+    console.log(err);
+  }
+};
+console.log(process.argv[2]);
 
-// if (process.argv[2] === '--import') {
-//   imoporttour();
-// } else if (process.argv[2] === '--delete') {
-//   deleteall();
-// }
+if (process.argv[2] === '--import') {
+  imoporttour();
+} else if (process.argv[2] === '--delete') {
+  deleteall();
+}

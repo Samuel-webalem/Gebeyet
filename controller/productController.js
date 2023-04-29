@@ -1,7 +1,7 @@
 const Product = require("../model/productmodel");
-const APIFeatures = require('../util/apiFeatures')
-
-exports.getproduct = async (req, res,next) => {
+const APIFeatures = require("../util/apiFeatures");
+const mongoose = require('mongoose')
+exports.getproduct = async (req, res, next) => {
   try {
     const features = new APIFeatures(Product.find(), req.query)
       .filter()
@@ -9,7 +9,6 @@ exports.getproduct = async (req, res,next) => {
       .paginate()
       .sort();
 
-    
     const products = await features.query;
 
     res.status(200).json({
@@ -27,23 +26,28 @@ exports.getproduct = async (req, res,next) => {
   }
 };
 exports.getsingleproduct = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    console.log(product)
-     res.status(200).json({
-       status: "succuess",
-       data: {
-          product
-        }
-     });
-  } catch (error) {
-     res.status(404).json({
+   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+     return res.status(404).json({
        status: "failed",
-       message: error,
+       message: "Invalid product ID",
      });
+   }
+  try {
+    const product = await Product.findById(req.params.id)
+    res.status(200).json({
+      status: "succuess",
+      data: {
+        product,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "failed",
+      message: error,
+    });
   }
-}
-exports.createproduct = async (req, res) => {
+};
+exports.createproduct = async (req, res,next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({
@@ -54,10 +58,10 @@ exports.createproduct = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(404).json({
+   next( res.status(404).json({
       status: "failed",
       message: error,
-    });
+    }));
   }
 };
 
@@ -108,23 +112,23 @@ exports.proudctStatus = async (req, res) => {
         $group: {
           _id: { $toUpper: "$category" },
           sum: { $sum: 1 },
-          avg_price: { $avg: '$price' },
-          min_price: { $min: '$price' },
-          max_price:{$max:'$price'}
+          avg_price: { $avg: "$price" },
+          min_price: { $min: "$price" },
+          max_price: { $max: "$price" },
         },
       },
     ]);
-     res.status(200).json({
-       status: "succuess",
-       requested: req.reqtime,
-       data: {
-         status
-       }
-     });
+    res.status(200).json({
+      status: "succuess",
+      requested: req.reqtime,
+      data: {
+        status,
+      },
+    });
   } catch (error) {
     res.status(404).json({
       status: "failed",
       message: error,
     });
   }
-}
+};
