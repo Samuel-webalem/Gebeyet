@@ -75,3 +75,23 @@ exports.deleteMe = async (req, res, next) => {
     );
   }
 };
+exports.getuser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    res.status(200).json({
+      status: "succuess",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "failed",
+      message: error,
+    });
+  }
+};
+exports.getme = (req, res, next) => {
+  req.params.id = req.user.id; 
+  next();
+}

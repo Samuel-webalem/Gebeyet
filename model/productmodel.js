@@ -46,7 +46,12 @@ const productSchemea = new Schema(
     ],
     discountPercentage: Number,
     slug: String,
+    review: {
+      type: mongoose.Schema.ObjectId,
+      ref:'Review'
+    }
   },
+  
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -57,6 +62,12 @@ productSchemea.pre('save', function (next){
   this.slug = slugify(this.title, { lower: true });
   next();
 })
+
+productSchemea.virtual("review", {
+  ref: "Review",
+  foreignField: "product",
+  localField:'_id'
+});
 productSchemea.pre(/^find/, function (next) {
   this.populate({
     path: "seller",

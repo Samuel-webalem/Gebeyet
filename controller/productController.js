@@ -1,6 +1,16 @@
 const Product = require("../model/productmodel");
 const APIFeatures = require("../util/apiFeatures");
 const mongoose = require('mongoose')
+
+
+
+exports.topproduct = (req, res, next) => {
+  req.query.limit = "5";
+  req.query.sort = "-rating,price";
+  req.query.fields = "price,rating,brand,title,category,images";
+
+  next();
+};
 exports.getproduct = async (req, res, next) => {
   try {
     const features = new APIFeatures(Product.find(), req.query)
@@ -33,7 +43,7 @@ exports.getsingleproduct = async (req, res) => {
      });
    }
   try {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findById(req.params.id).populate('review')
     res.status(200).json({
       status: "succuess",
       data: {

@@ -4,8 +4,14 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/signup", authController.SignUp);
+router.get(
+  "/me",
+  authController.protect,
+  userController.getme,
+  userController.getuser
+);
 router.patch("/updateme", authController.protect, userController.updateMe);
-router.patch("/deleteme",authController.protect,userController.deleteMe)
+router.patch("/deleteme", authController.protect, userController.deleteMe);
 router.get(
   "/",
   authController.protect,
