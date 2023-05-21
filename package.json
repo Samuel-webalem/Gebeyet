@@ -4,7 +4,11 @@
   "description": "portfolio",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "build": "npm install --prefix client && npm run build --prefix client",
+    "server": "nodemon server.js --ignore 'client/'",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
     "samuel"
@@ -13,6 +17,9 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^8.0.1",
+    "cors": "^2.8.5",
+    "degit": "^2.8.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
